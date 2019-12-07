@@ -18,6 +18,8 @@ import (
 
 	"regexp"
 
+	"github.com/bwmarrin/discordgo"
+	embed "github.com/clinet/discordgo-embed"
 	"github.com/majormjr/rcon"
 )
 
@@ -44,6 +46,27 @@ func randomPort() int {
 }
 
 func initFactorio() (f *FactorioServer, err error) {
+
+	// DISCORD TESTING
+
+	bot, err := discordgo.New("Bot " + config.DiscordToken)
+	if err != nil {
+		log.Println("error creating Discord session,", err)
+		return
+	}
+
+	// Open a websocket connection to Discord and begin listening.
+	err = bot.Open()
+	if err != nil {
+		log.Println("error opening connection,", err)
+		return
+	}
+	time.Sleep(3 * time.Second)
+
+	bot.ChannelMessageSendEmbed(config.DiscordChannelId, embed.NewErrorEmbed("Error!", "Test."))
+
+	// DISCORD TESTING
+
 	f = new(FactorioServer)
 	f.Settings = make(map[string]interface{})
 
@@ -139,7 +162,7 @@ func initFactorio() (f *FactorioServer, err error) {
 	f.BaseModVersion = modInfo.Version
 
 	// load admins from additional file
-	if(f.Version.Greater(Version{0,17,0})) {
+	if (f.Version.Greater(Version{0, 17, 0})) {
 		if _, err := os.Stat(filepath.Join(config.FactorioConfigDir, config.FactorioAdminFile)); os.IsNotExist(err) {
 			//save empty admins-file
 			ioutil.WriteFile(filepath.Join(config.FactorioConfigDir, config.FactorioAdminFile), []byte("[]"), 0664)
@@ -190,7 +213,7 @@ func (f *FactorioServer) Run() error {
 		"--rcon-port", strconv.Itoa(config.FactorioRconPort),
 		"--rcon-password", config.FactorioRconPass)
 
-	if(f.Version.Greater(Version{0,17,0})) {
+	if (f.Version.Greater(Version{0, 17, 0})) {
 		args = append(args, "--server-adminlist", filepath.Join(config.FactorioConfigDir, config.FactorioAdminFile))
 	}
 

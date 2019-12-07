@@ -34,6 +34,9 @@ type Config struct {
 	CookieEncryptionKey     string `json:"cookie_encryption_key"`
 	SettingsFile            string `json:"settings_file"`
 	LogFile                 string `json:"log_file"`
+	DiscordToken            string `json:"discord_token"`
+	DiscordChannelId        string `json:"discord_channel"`
+	DiscordPrefix           string `json:"discord_prefix"`
 	ConfFile                string
 	glibcCustom             string
 	glibcLocation           string
@@ -79,6 +82,9 @@ func parseFlags() {
 	glibcCustom := flag.String("glibc-custom", "false", "By default false, if custom glibc is required set this to true and add glibc-loc and glibc-lib-loc parameters")
 	glibcLocation := flag.String("glibc-loc", "/opt/glibc-2.18/lib/ld-2.18.so", "Location glibc ld.so file if needed (ex. /opt/glibc-2.18/lib/ld-2.18.so)")
 	glibcLibLoc := flag.String("glibc-lib-loc", "/opt/glibc-2.18/lib", "Location of glibc lib folder (ex. /opt/glibc-2.18/lib)")
+	discordToken := flag.String("token", "", "Discord bot token for channel integration.")
+	discordChannel := flag.String("channel", "", "Discord channel id for use.")
+	discordPrefix := flag.String("prefix", "!", "Prefix for discord commands.")
 
 	flag.Parse()
 	config.glibcCustom = *glibcCustom
@@ -98,6 +104,9 @@ func parseFlags() {
 	config.FactorioCredentialsFile = "./factorio.auth"
 	config.FactorioAdminFile = "server-adminlist.json"
 	config.MaxUploadSize = *factorioMaxUpload
+	config.DiscordToken = *discordToken
+	config.DiscordChannelId = *discordChannel
+	config.DiscordPrefix = *discordPrefix
 
 	if runtime.GOOS == "windows" {
 		appdata := os.Getenv("APPDATA")

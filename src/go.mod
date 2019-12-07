@@ -4,12 +4,15 @@ go 1.13
 
 require (
 	github.com/apexskier/httpauth v1.3.2
+	github.com/bwmarrin/discordgo v0.20.1
+	github.com/clinet/discordgo-embed v0.0.0-20190411043415-d754bc1a576c
 	github.com/go-ini/ini v1.49.0
 	github.com/go-sql-driver/mysql v1.4.1 // indirect
 	github.com/gorilla/mux v1.7.3
 	github.com/gorilla/sessions v1.2.0 // indirect
 	github.com/gorilla/websocket v1.4.1
 	github.com/hpcloud/tail v1.0.0
+	github.com/joho/godotenv v1.3.0 // indirect
 	github.com/lib/pq v1.2.0 // indirect
 	github.com/majormjr/rcon v0.0.0-20120923215419-8fbb8268b60a
 	github.com/mattn/go-sqlite3 v1.11.0 // indirect
