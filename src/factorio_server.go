@@ -44,8 +44,6 @@ func randomPort() int {
 }
 
 func initFactorio() (f *FactorioServer, err error) {
-	initDiscord(config.DiscordToken, config.DiscordChannelId)
-
 	f = new(FactorioServer)
 	f.Settings = make(map[string]interface{})
 

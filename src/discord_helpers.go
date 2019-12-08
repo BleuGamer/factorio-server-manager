@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"log"
+	"path/filepath"
 	"strings"
 	"time"
 
@@ -20,7 +21,7 @@ import (
 // Pipe chat to discord.
 func Chat(s *discordgo.Session, m *discordgo.MessageCreate) {
 	for {
-		t, err := tail.TailFile(config.FactorioLog, tail.Config{Follow: true})
+		t, err := tail.TailFile(filepath.Join(config.FactorioDir, "factorio-server-console.log"), tail.Config{Follow: true})
 		if err != nil {
 			log.Println("Could not tail factorio.log", err)
 		}

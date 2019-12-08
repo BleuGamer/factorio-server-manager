@@ -125,6 +125,8 @@ func main() {
 	loadServerConfig(config.ConfFile)
 	// create mod-stuff
 	modStartUp()
+	// Start Discord
+	initDiscord(config.DiscordToken, config.DiscordChannelId)
 
 	// Initialize Factorio Server struct
 	FactorioServ, err = initFactorio()
