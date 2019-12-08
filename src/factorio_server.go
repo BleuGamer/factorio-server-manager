@@ -18,8 +18,6 @@ import (
 
 	"regexp"
 
-	"github.com/bwmarrin/discordgo"
-	embed "github.com/clinet/discordgo-embed"
 	"github.com/majormjr/rcon"
 )
 
@@ -46,26 +44,7 @@ func randomPort() int {
 }
 
 func initFactorio() (f *FactorioServer, err error) {
-
-	// DISCORD TESTING
-
-	bot, err := discordgo.New("Bot " + config.DiscordToken)
-	if err != nil {
-		log.Println("error creating Discord session,", err)
-		return
-	}
-
-	// Open a websocket connection to Discord and begin listening.
-	err = bot.Open()
-	if err != nil {
-		log.Println("error opening connection,", err)
-		return
-	}
-	time.Sleep(3 * time.Second)
-
-	bot.ChannelMessageSendEmbed(config.DiscordChannelId, embed.NewErrorEmbed("Error!", "Test."))
-
-	// DISCORD TESTING
+	initDiscord(config.DiscordToken, config.DiscordChannelId)
 
 	f = new(FactorioServer)
 	f.Settings = make(map[string]interface{})
