@@ -33,7 +33,7 @@ func initDiscord(token string, channel string) {
 
 	//var Session *discordgo.Session
 	bot, err := discordgo.New("Bot " + token)
-	//Session = bot
+	Session := bot
 	if err != nil {
 		log.Println("error creating Discord session,", err)
 		return
@@ -48,32 +48,36 @@ func initDiscord(token string, channel string) {
 	bot.AddHandlerOnce(Chat)
 	time.Sleep(3 * time.Second)
 	log.Println("Discord launched successfully!")
-	bot.UpdateStatus(0, "Factorio")
+	Session.UpdateStatus(0, "Factorio")
 
-	/*
-		embedme := &discordgo.MessageEmbed{
-			Author:      &discordgo.MessageEmbedAuthor{},
-			Color:       0xb87333, // Copper
-			Description: "Factorio Message Test Embed",
-			Fields: []*discordgo.MessageEmbedField{
-				&discordgo.MessageEmbedField{
-					Name:   "Field",
-					Value:  "Value",
-					Inline: false,
-				},
+	embedme := &discordgo.MessageEmbed{
+		Author:      &discordgo.MessageEmbedAuthor{},
+		Color:       0xb87333, // Copper
+		Description: "Factorio server details:",
+		Fields: []*discordgo.MessageEmbedField{
+			&discordgo.MessageEmbedField{
+				Name:   "IP:PORT",
+				Value:  "0.0.0.0:34197",
+				Inline: true,
 			},
-			Image: &discordgo.MessageEmbedImage{
-				URL: "https://wiki.factorio.com/images/Rocket_silo_entity.png",
+			&discordgo.MessageEmbedField{
+				Name:   "Lobby",
+				Value:  "Seablock Testing Initiative",
+				Inline: true,
 			},
-			Thumbnail: &discordgo.MessageEmbedThumbnail{
-				URL: "https://mods-data.factorio.com/assets/832490ba5d54b75061d9f5c959c75dfa883613ab.thumb.png",
-			},
-			Timestamp: time.Now().Format(time.RFC3339), // Discord wants ISO8601; RFC3339 is an extension of ISO8601 and should be completely compatible.
-			Title:     "Factorio Announcement: ",
-		}
+		},
+		Image: &discordgo.MessageEmbedImage{
+			URL: "https://camo.githubusercontent.com/d5f508f9a43def47f889777e95b9d6f972648b10/687474703a2f2f692e696d6775722e636f6d2f713774627a64482e706e67",
+		},
+		Thumbnail: &discordgo.MessageEmbedThumbnail{
+			URL: "https://mods-data.factorio.com/assets/832490ba5d54b75061d9f5c959c75dfa883613ab.thumb.png",
+		},
+		Timestamp: time.Now().Format(time.RFC3339), // Discord wants ISO8601; RFC3339 is an extension of ISO8601 and should be completely compatible.
+		Title:     "Factorio Server Manager is now live at: https://0.0.0.0:8080",
+	}
 
-		Session.ChannelMessageSendEmbed(config.DiscordChannelId, embedme)
-	*/
+	Session.ChannelMessageSendEmbed(config.DiscordChannelId, embedme)
+
 }
 
 // Send discord messages to game.
