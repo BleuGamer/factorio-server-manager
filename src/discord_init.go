@@ -9,6 +9,11 @@ import (
 )
 
 func initDiscord(token string, channel string) {
+	// TODO: Extended configuration options for these variables?
+	serverLocation := config.ServerIP + ":" + config.ServerPort
+	// TODO: Factorio port config is a little boggled.
+	fserverLocation := config.FactorioIP + ":" + config.ServerPort
+
 	// Boolean to enable/disable discord integration.
 	var shouldRun bool
 
@@ -50,33 +55,7 @@ func initDiscord(token string, channel string) {
 	log.Println("Discord launched successfully!")
 	Session.UpdateStatus(0, "Factorio")
 
-	embedme := &discordgo.MessageEmbed{
-		Author:      &discordgo.MessageEmbedAuthor{},
-		Color:       0xb87333, // Copper
-		Description: "Factorio server details:",
-		Fields: []*discordgo.MessageEmbedField{
-			&discordgo.MessageEmbedField{
-				Name:   "IP:PORT",
-				Value:  "0.0.0.0:34197",
-				Inline: true,
-			},
-			&discordgo.MessageEmbedField{
-				Name:   "Lobby",
-				Value:  "Seablock Testing Initiative",
-				Inline: true,
-			},
-		},
-		Image: &discordgo.MessageEmbedImage{
-			URL: "https://camo.githubusercontent.com/d5f508f9a43def47f889777e95b9d6f972648b10/687474703a2f2f692e696d6775722e636f6d2f713774627a64482e706e67",
-		},
-		Thumbnail: &discordgo.MessageEmbedThumbnail{
-			URL: "https://mods-data.factorio.com/assets/832490ba5d54b75061d9f5c959c75dfa883613ab.thumb.png",
-		},
-		Timestamp: time.Now().Format(time.RFC3339), // Discord wants ISO8601; RFC3339 is an extension of ISO8601 and should be completely compatible.
-		Title:     "Factorio Server Manager is now live at: https://0.0.0.0:8080",
-	}
-
-	Session.ChannelMessageSendEmbed(config.DiscordChannelId, embedme)
+	discordEmbedServerLaunch(serverLocation, fserverLocation, Session)
 
 }
 
