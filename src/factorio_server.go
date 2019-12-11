@@ -239,7 +239,8 @@ func (f *FactorioServer) Run() error {
 	err = f.connectRcon()
 	if err != nil {
 		log.Printf("Error connecting rcon: %s", err)
-		return err
+		// continue here until this is handled better
+		//return err
 	}
 
 	err = f.Cmd.Wait()
