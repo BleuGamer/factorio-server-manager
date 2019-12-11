@@ -394,3 +394,17 @@ func (f *FactorioServer) Kill() error {
 
 	return nil
 }
+
+func (f *FactorioServer) SendCommand(cmd string) (int, error) {
+	if f.Rcon == nil {
+		fmt.Println("Rcon nil for SendCommand, attempting reconnect")
+		err := connectRC()
+		if err != nil {
+			fmt.Printf("Rcon reconnect failed, abandoning SendCommand: %v\n", err)
+			return 0, err
+		}
+		fmt.Println("Rcon reconnected successfully!")
+	}
+
+	return f.Rcon.Write(cmd)
+}
