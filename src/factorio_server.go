@@ -139,7 +139,7 @@ func initFactorio() (f *FactorioServer, err error) {
 	f.BaseModVersion = modInfo.Version
 
 	// load admins from additional file
-	if(f.Version.Greater(Version{0,17,0})) {
+	if (f.Version.Greater(Version{0, 17, 0})) {
 		if _, err := os.Stat(filepath.Join(config.FactorioConfigDir, config.FactorioAdminFile)); os.IsNotExist(err) {
 			//save empty admins-file
 			ioutil.WriteFile(filepath.Join(config.FactorioConfigDir, config.FactorioAdminFile), []byte("[]"), 0664)
@@ -190,7 +190,7 @@ func (f *FactorioServer) Run() error {
 		"--rcon-port", strconv.Itoa(config.FactorioRconPort),
 		"--rcon-password", config.FactorioRconPass)
 
-	if(f.Version.Greater(Version{0,17,0})) {
+	if (f.Version.Greater(Version{0, 17, 0})) {
 		args = append(args, "--server-adminlist", filepath.Join(config.FactorioConfigDir, config.FactorioAdminFile))
 	}
 
@@ -393,4 +393,18 @@ func (f *FactorioServer) Kill() error {
 	}
 
 	return nil
+}
+
+func (f *FactorioServer) SendCommand(cmd string) (int, error) {
+	if f.Rcon == nil {
+		fmt.Println("Rcon nil for SendCommand, attempting reconnect")
+		err := connectRC()
+		if err != nil {
+			fmt.Printf("Rcon reconnect failed, abandoning SendCommand: %v\n", err)
+			return 0, err
+		}
+		fmt.Println("Rcon reconnected successfully!")
+	}
+
+	return f.Rcon.Write(cmd)
 }
