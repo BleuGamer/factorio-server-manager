@@ -13,7 +13,6 @@ import (
 	"path/filepath"
 	"runtime"
 	"strconv"
-	"strings"
 	"time"
 
 	"regexp"
@@ -226,8 +225,8 @@ func (f *FactorioServer) Run() error {
 		return err
 	}
 
-	go f.parseRunningCommand(f.StdOut)
-	go f.parseRunningCommand(f.StdErr)
+	go f.logCommand(f.StdOut)
+	go f.logCommand(f.StdErr)
 
 	err = f.Cmd.Start()
 	if err != nil {
@@ -235,6 +234,13 @@ func (f *FactorioServer) Run() error {
 		return err
 	}
 	f.Running = true
+
+	// setup rcon
+	err = f.connectRcon()
+	if err != nil {
+		log.Printf("Error connecting rcon: %s", err)
+		return err
+	}
 
 	err = f.Cmd.Wait()
 	if err != nil {
@@ -246,43 +252,26 @@ func (f *FactorioServer) Run() error {
 	return nil
 }
 
-func (f *FactorioServer) parseRunningCommand(std io.ReadCloser) (err error) {
+func (f *FactorioServer) logCommand(std io.ReadCloser) error {
 	stdScanner := bufio.NewScanner(std)
 	for stdScanner.Scan() {
 		log.Printf("Factorio Server: %s", stdScanner.Text())
 		if err := f.writeLog(stdScanner.Text()); err != nil {
 			log.Printf("Error: %s", err)
-		}
-
-		line := strings.Fields(stdScanner.Text())
-		// Ensure logline slice is in bounds
-		if len(line) > 1 {
-			// Check if Factorio Server reports any errors if so handle it
-			if line[1] == "Error" {
-				err := f.checkLogError(line)
-				if err != nil {
-					log.Printf("Error checking Factorio Server Error: %s", err)
-				}
-			}
-			// If rcon port opens indicated in log connect to rcon
-			rconLog := "Starting RCON interface at port " + strconv.Itoa(config.FactorioRconPort)
-			// check if slice index is greater than 2 to prevent panic
-			if len(line) > 2 {
-				// log line for opened rcon connection
-				if strings.Join(line[3:], " ") == rconLog {
-					log.Printf("Rcon running on Factorio Server")
-					err = connectRC()
-					if err != nil {
-						log.Printf("Error: %s", err)
-					}
-				}
-			}
+			return err
 		}
 	}
-	if err := stdScanner.Err(); err != nil {
-		log.Printf("Error reading std buffer: %s", err)
+
+	return nil
+}
+
+func (f *FactorioServer) connectRcon() error {
+	r, err := connectRC(config)
+	if err != nil {
 		return err
 	}
+
+	f.Rcon = r
 	return nil
 }
 
@@ -398,7 +387,7 @@ func (f *FactorioServer) Kill() error {
 func (f *FactorioServer) SendCommand(cmd string) (int, error) {
 	if f.Rcon == nil {
 		fmt.Println("Rcon nil for SendCommand, attempting reconnect")
-		err := connectRC()
+		err := f.connectRcon()
 		if err != nil {
 			fmt.Printf("Rcon reconnect failed, abandoning SendCommand: %v\n", err)
 			return 0, err
