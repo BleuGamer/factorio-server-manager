@@ -163,7 +163,7 @@ func initFactorio() (f *FactorioServer, err error) {
 	return
 }
 
-func (f *FactorioServer) Run() error {
+func (f *FactorioServer) Run(timeStampedLog string) error {
 	var err error
 
 	data, err := json.MarshalIndent(f.Settings, "", "  ")
@@ -225,8 +225,8 @@ func (f *FactorioServer) Run() error {
 		return err
 	}
 
-	go f.logCommand(f.StdOut)
-	go f.logCommand(f.StdErr)
+	go f.logCommand(f.StdOut, timeStampedLog)
+	go f.logCommand(f.StdErr, timeStampedLog)
 
 	err = f.Cmd.Start()
 	if err != nil {
@@ -253,11 +253,11 @@ func (f *FactorioServer) Run() error {
 	return nil
 }
 
-func (f *FactorioServer) logCommand(std io.ReadCloser) error {
+func (f *FactorioServer) logCommand(std io.ReadCloser, timeStampedLog string) error {
 	stdScanner := bufio.NewScanner(std)
 	for stdScanner.Scan() {
 		log.Printf("Factorio Server: %s", stdScanner.Text())
-		if err := f.writeLog(stdScanner.Text()); err != nil {
+		if err := f.writeLog(stdScanner.Text(), timeStampedLog); err != nil {
 			log.Printf("Error: %s", err)
 			return err
 		}
@@ -276,8 +276,8 @@ func (f *FactorioServer) connectRcon() error {
 	return nil
 }
 
-func (f *FactorioServer) writeLog(logline string) error {
-	logfileName := filepath.Join(config.FactorioDir, "factorio-server-console.log")
+func (f *FactorioServer) writeLog(logline string, timeStampedLog string) error {
+	logfileName := filepath.Join(config.FactorioDir, timeStampedLog)
 	file, err := os.OpenFile(logfileName, os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0644)
 	if err != nil {
 		log.Printf("Cannot open logfile for appending Factorio Server output: %s", err)
