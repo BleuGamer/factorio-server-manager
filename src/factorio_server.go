@@ -288,7 +288,7 @@ func (f *FactorioServer) writeLog(logline string, timeStampedLog string) error {
 	logline = logline + "\n"
 
 	if _, err = file.WriteString(logline); err != nil {
-		log.Printf("Error appending to factorio-server-console.log: %s", err)
+		log.Printf(timeStampedLog+": %s", err)
 		return err
 	}
 
