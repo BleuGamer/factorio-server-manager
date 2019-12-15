@@ -36,6 +36,7 @@ type Config struct {
 	LogFile                 string `json:"log_file"`
 	DiscordToken            string `json:"discord_token"`
 	DiscordChannelId        string `json:"discord_channel"`
+	DiscordAdminChannelId   string `json:"discord_admin_channel"`
 	DiscordPrefix           string `json:"discord_prefix"`
 	ConfFile                string
 	glibcCustom             string
@@ -83,7 +84,8 @@ func parseFlags() {
 	glibcLocation := flag.String("glibc-loc", "/opt/glibc-2.18/lib/ld-2.18.so", "Location glibc ld.so file if needed (ex. /opt/glibc-2.18/lib/ld-2.18.so)")
 	glibcLibLoc := flag.String("glibc-lib-loc", "/opt/glibc-2.18/lib", "Location of glibc lib folder (ex. /opt/glibc-2.18/lib)")
 	discordToken := flag.String("token", "", "Discord bot token for channel integration.")
-	discordChannel := flag.String("channel", "", "Discord channel id for use.")
+	discordChannel := flag.String("channel", "", "Discord channel id for server chat and commands.")
+	discordAdminChannel := flag.String("admin-channel", "", "Optional admin channel id for admin info.")
 	discordPrefix := flag.String("prefix", "!", "Prefix for discord commands.")
 
 	flag.Parse()
@@ -106,6 +108,7 @@ func parseFlags() {
 	config.MaxUploadSize = *factorioMaxUpload
 	config.DiscordToken = *discordToken
 	config.DiscordChannelId = *discordChannel
+	config.DiscordAdminChannelId = *discordAdminChannel
 	config.DiscordPrefix = *discordPrefix
 
 	if runtime.GOOS == "windows" {
