@@ -27,7 +27,7 @@ func commandSend(client *Client, data interface{}) {
 		go func() {
 			log.Printf("Received command: %v", data)
 
-			reqId, err := FactorioServ.Rcon.Write(data.(string))
+			reqId, err := FactorioServ.SendCommand(data.(string))
 			if err != nil {
 				log.Printf("Error sending rcon command: %s", err)
 				return
