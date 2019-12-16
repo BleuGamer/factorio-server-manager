@@ -129,7 +129,7 @@ func main() {
 	// create mod-stuff
 	modStartUp()
 	// Start Discord
-	initDiscord(config.DiscordToken, config.DiscordChannelId)
+	initDiscord(config.DiscordToken, config.DiscordChannelId, config.DiscordAdminChannelId)
 
 	// Initialize Factorio Server struct
 	FactorioServ, err = initFactorio()

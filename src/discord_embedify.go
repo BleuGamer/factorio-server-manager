@@ -8,24 +8,19 @@ import (
 
 func discordEmbedServerLaunch(
 	serverLocation string,
-	fserverLocation string,
+	targetChannel string,
 	s *discordgo.Session) {
 
 	embedme := &discordgo.MessageEmbed{
 		Author:      &discordgo.MessageEmbedAuthor{},
+		Title:     "Factorio Server Manager",
 		Color:       0xb87333, // Copper
-		Description: "Factorio server details:",
+		Description: "Server manager details:",
 		Fields: []*discordgo.MessageEmbedField{
 			&discordgo.MessageEmbedField{
-				Name:   "IP:PORT",
-				Value:  fserverLocation,
-				Inline: true,
-			},
-			&discordgo.MessageEmbedField{
-				Name: "Lobby",
-				// TODO: Variable this.
-				Value:  "Seablock Testing Initiative",
-				Inline: true,
+				Name: "Server Location:",
+				Value: "https://" + serverLocation,
+				Inline: false,
 			},
 		},
 		Image: &discordgo.MessageEmbedImage{
@@ -35,9 +30,8 @@ func discordEmbedServerLaunch(
 			URL: "https://mods-data.factorio.com/assets/832490ba5d54b75061d9f5c959c75dfa883613ab.thumb.png",
 		},
 		Timestamp: time.Now().Format(time.RFC3339), // Discord wants ISO8601; RFC3339 is an extension of ISO8601 and should be completely compatible.
-		Title:     "Factorio Server Manager is now live at: " + serverLocation,
 	}
 
-	s.ChannelMessageSendEmbed(config.DiscordChannelId, embedme)
+	s.ChannelMessageSendEmbed(targetChannel, embedme)
 
 }
