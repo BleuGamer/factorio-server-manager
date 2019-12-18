@@ -8,5 +8,6 @@
     "rcon_pass": "factorio_rcon",
     "discord_token": "",
     "discord_channel": "",
+    "discord_admin_channel": "",
     "discord_prefix": "!"
 }

@@ -8,11 +8,15 @@ import (
 	"github.com/bwmarrin/discordgo"
 )
 
-func initDiscord(token string, channel string) {
+func initDiscord(token string, channel string, adminChannel string) {
 	// TODO: Extended configuration options for these variables?
 	serverLocation := config.ServerIP + ":" + config.ServerPort
 	// TODO: Factorio port config is a little boggled.
 	fserverLocation := config.FactorioIP + ":" + config.ServerPort
+
+	if adminChannel == "" {
+		adminChannel = channel
+	}
 
 	// Boolean to enable/disable discord integration.
 	var shouldRun bool
@@ -55,7 +59,7 @@ func initDiscord(token string, channel string) {
 	log.Println("Discord launched successfully!")
 	Session.UpdateStatus(0, "Factorio")
 
-	discordEmbedServerLaunch(serverLocation, fserverLocation, Session)
+	discordEmbedServerLaunch(serverLocation, adminChannel, Session)
 
 }
 
