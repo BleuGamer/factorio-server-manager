@@ -43,6 +43,7 @@ func initDiscord(token string, channel string, adminChannel string) {
 	//var Session *discordgo.Session
 	bot, err := discordgo.New("Bot " + token)
 	Session := bot
+	setupSession(Session)
 	if err != nil {
 		log.Println("error creating Discord session,", err)
 		return
