@@ -6,6 +6,8 @@
     "settings_file": "server-settings.json",
     "log_file": "factorio-server-manager.log",
     "rcon_pass": "factorio_rcon",
+    "lobby_name": "lobby_name",
+    "server_location": "http://0.0.0.0:8080",
     "discord_token": "",
     "discord_channel": "",
     "discord_admin_channel": "",

@@ -12,10 +12,7 @@ func setupSession(s *discordgo.Session) {
 	toSession = s
 }
 
-func discordEmbedServerLaunch(
-	serverLocation string,
-	targetChannel string,
-	s *discordgo.Session) {
+func discordEmbedServerLaunch() {
 
 	embedme := &discordgo.MessageEmbed{
 		Author:      &discordgo.MessageEmbedAuthor{},
@@ -25,7 +22,7 @@ func discordEmbedServerLaunch(
 		Fields: []*discordgo.MessageEmbedField{
 			&discordgo.MessageEmbedField{
 				Name:   "Server Location:",
-				Value:  "https://" + serverLocation,
+				Value:  config.ServerLocation,
 				Inline: false,
 			},
 		},
@@ -38,12 +35,11 @@ func discordEmbedServerLaunch(
 		Timestamp: time.Now().Format(time.RFC3339), // Discord wants ISO8601; RFC3339 is an extension of ISO8601 and should be completely compatible.
 	}
 
-	s.ChannelMessageSendEmbed(targetChannel, embedme)
+	toSession.ChannelMessageSendEmbed(config.DiscordAdminChannelId, embedme)
 
 }
 
-func discordEmbedFactorioLaunch(
-	lobbyName string) {
+func discordEmbedFactorioLaunch() {
 
 	embedme := &discordgo.MessageEmbed{
 		Author:      &discordgo.MessageEmbedAuthor{},
@@ -53,7 +49,7 @@ func discordEmbedFactorioLaunch(
 		Fields: []*discordgo.MessageEmbedField{
 			&discordgo.MessageEmbedField{
 				Name:   "Lobby Name:",
-				Value:  lobbyName,
+				Value:  config.LobbyName,
 				Inline: false,
 			},
 		},
