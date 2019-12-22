@@ -54,6 +54,7 @@ func initDiscord(token string, channel string, adminChannel string) {
 		log.Println("error opening connection,", err)
 		return
 	}
+	bot.AddHandler(messageCreate)
 	bot.AddHandlerOnce(Chat)
 	time.Sleep(3 * time.Second)
 	log.Println("Discord launched successfully!")
@@ -76,7 +77,7 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 			//command := strings.Split(m.Content[1:len(m.Content)], " ")
 			//name := strings.ToLower(command[0])
 			// TODO: commands
-			// commands.RunCommand(name, s, m)
+			//commands.RunCommand(name, s, m)
 			return
 		}
 		// Pipes normal chat allowing it to be seen ingame
@@ -84,6 +85,19 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 		//if err != nil {
 		//	log.Println("An error occurred when attempting to pass Discord chat to in-game Details: ", err)
 		//}
+		// --
+		if FactorioServ.Running {
+			data := "[Discord] <" + m.Author.Username + ">: " + m.ContentWithMentionsReplaced() + "\r\n"
+			reqId, err := FactorioServ.SendCommand(data)
+			if err != nil {
+				log.Printf("Error sending rcon command: %s", err)
+				return
+			}
+
+			log.Printf("Command send to Factorio: %s, with rcon request id: %v", data, reqId)
+
+		}
+		// --
 		return
 	}
 }
