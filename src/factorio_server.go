@@ -166,6 +166,8 @@ func initFactorio() (f *FactorioServer, err error) {
 func (f *FactorioServer) Run(timeStampedLog string) error {
 	var err error
 
+	discordEmbedFactorioLaunch("Testbench")
+
 	data, err := json.MarshalIndent(f.Settings, "", "  ")
 	if err != nil {
 		log.Println("Failed to marshal FactorioServerSettings: ", err)
@@ -303,6 +305,8 @@ func (f *FactorioServer) checkLogError(logline []string) error {
 }
 
 func (f *FactorioServer) Stop() error {
+	discordEmbedFactorioClose()
+
 	if runtime.GOOS == "windows" {
 
 		// Disable our own handling of CTRL+C, so we don't close when we send it to the console.
@@ -348,6 +352,8 @@ func (f *FactorioServer) Stop() error {
 }
 
 func (f *FactorioServer) Kill() error {
+	discordEmbedFactorioClose()
+
 	if runtime.GOOS == "windows" {
 
 		err := f.Cmd.Process.Signal(os.Kill)

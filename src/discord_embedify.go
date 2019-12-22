@@ -6,6 +6,12 @@ import (
 	"github.com/bwmarrin/discordgo"
 )
 
+var toSession *discordgo.Session
+
+func setupSession(s *discordgo.Session) {
+	toSession = s
+}
+
 func discordEmbedServerLaunch(
 	serverLocation string,
 	targetChannel string,
@@ -13,13 +19,13 @@ func discordEmbedServerLaunch(
 
 	embedme := &discordgo.MessageEmbed{
 		Author:      &discordgo.MessageEmbedAuthor{},
-		Title:     "Factorio Server Manager",
+		Title:       "Factorio Server Manager",
 		Color:       0xb87333, // Copper
 		Description: "Server manager details:",
 		Fields: []*discordgo.MessageEmbedField{
 			&discordgo.MessageEmbedField{
-				Name: "Server Location:",
-				Value: "https://" + serverLocation,
+				Name:   "Server Location:",
+				Value:  "https://" + serverLocation,
 				Inline: false,
 			},
 		},
@@ -34,4 +40,38 @@ func discordEmbedServerLaunch(
 
 	s.ChannelMessageSendEmbed(targetChannel, embedme)
 
+}
+
+func discordEmbedFactorioLaunch(
+	lobbyName string) {
+
+	embedme := &discordgo.MessageEmbed{
+		Author:      &discordgo.MessageEmbedAuthor{},
+		Title:       "Factorio Server Launched!",
+		Color:       0x00ff00, // Green
+		Description: "Server details:",
+		Fields: []*discordgo.MessageEmbedField{
+			&discordgo.MessageEmbedField{
+				Name:   "Lobby Name:",
+				Value:  lobbyName,
+				Inline: false,
+			},
+		},
+		Timestamp: time.Now().Format(time.RFC3339),
+	}
+
+	toSession.ChannelMessageSendEmbed(config.DiscordChannelId, embedme)
+}
+
+func discordEmbedFactorioClose() {
+
+	embedme := &discordgo.MessageEmbed{
+		Author:      &discordgo.MessageEmbedAuthor{},
+		Title:       "Factorio Server Shutdown!",
+		Color:       0xff0000, // Red
+		Description: "The server has stopped.",
+		Timestamp:   time.Now().Format(time.RFC3339),
+	}
+
+	toSession.ChannelMessageSendEmbed(config.DiscordChannelId, embedme)
 }
