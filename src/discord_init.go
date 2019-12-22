@@ -12,7 +12,7 @@ func initDiscord(token string, channel string, adminChannel string) {
 	// TODO: Extended configuration options for these variables?
 	serverLocation := config.ServerIP + ":" + config.ServerPort
 	// TODO: Factorio port config is a little boggled.
-	fserverLocation := config.FactorioIP + ":" + config.ServerPort
+	//fserverLocation := config.FactorioIP + ":" + config.ServerPort
 
 	if adminChannel == "" {
 		adminChannel = channel

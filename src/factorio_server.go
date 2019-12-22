@@ -377,9 +377,11 @@ func (f *FactorioServer) Kill() error {
 	f.Running = false
 	log.Printf("Sent SIGKILL to Factorio process. Factorio forced to exit.")
 
-	err = f.Rcon.Close()
-	if err != nil {
-		log.Printf("Error close rcon connection: %s", err)
+	if f.Rcon != nil {
+		err = f.Rcon.Close()
+		if err != nil {
+			log.Printf("Error close rcon connection: %s", err)
+		}
 	}
 
 	return nil
