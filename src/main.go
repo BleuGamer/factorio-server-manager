@@ -128,8 +128,6 @@ func main() {
 	loadServerConfig(config.ConfFile)
 	// create mod-stuff
 	modStartUp()
-	// Start Discord
-	initDiscord(config.DiscordToken, config.DiscordChannelId, config.DiscordAdminChannelId)
 
 	// Initialize Factorio Server struct
 	FactorioServ, err = initFactorio()
@@ -137,6 +135,8 @@ func main() {
 		log.Printf("Error occurred during FactorioServer initializaion: %v\n", err)
 		return
 	}
+	// Start Discord
+	initDiscord(config.DiscordToken, config.DiscordChannelId, config.DiscordAdminChannelId)
 
 	// Initialize authentication system
 	Auth = initAuth()

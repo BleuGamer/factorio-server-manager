@@ -18,10 +18,16 @@ import (
  * https://github.com/FactoKit/FactoCord
  */
 
+var logFile string
+
+func setupChat(lFile string) {
+	logFile = lFile
+}
+
 // Pipe chat to discord.
 func Chat(s *discordgo.Session, m *discordgo.MessageCreate) {
 	for {
-		t, err := tail.TailFile(filepath.Join(config.FactorioDir, "factorio-server-console.log"), tail.Config{Follow: true})
+		t, err := tail.TailFile(filepath.Join(config.FactorioDir, logFile), tail.Config{Follow: true})
 		if err != nil {
 			log.Println("Could not tail factorio.log", err)
 		}
