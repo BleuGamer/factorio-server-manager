@@ -38,6 +38,8 @@ type Config struct {
 	DiscordChannelId        string `json:"discord_channel"`
 	DiscordAdminChannelId   string `json:"discord_admin_channel"`
 	DiscordPrefix           string `json:"discord_prefix"`
+	LobbyName               string `json:"lobby_name"`
+	ServerLocation          string `json:"server_location"`
 	ConfFile                string
 	glibcCustom             string
 	glibcLocation           string

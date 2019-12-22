@@ -166,7 +166,7 @@ func initFactorio() (f *FactorioServer, err error) {
 func (f *FactorioServer) Run(timeStampedLog string) error {
 	var err error
 
-	discordEmbedFactorioLaunch("Testbench")
+	discordEmbedFactorioLaunch()
 
 	data, err := json.MarshalIndent(f.Settings, "", "  ")
 	if err != nil {
