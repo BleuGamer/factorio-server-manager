@@ -8,18 +8,22 @@ import (
 	"github.com/bwmarrin/discordgo"
 )
 
+type discordConfig struct {
+	HasDiscordDetails bool
+	ActiveSession     *discordgo.Session
+}
+
+var DiscordConfig discordConfig
+
 func initDiscord(token string, channel string, adminChannel string) {
 
-	// Boolean to enable/disable discord integration.
-	var shouldRun bool
-
 	if token != "" && channel != "" {
-		shouldRun = true
+		DiscordConfig.HasDiscordDetails = true
 	} else {
-		shouldRun = false
+		DiscordConfig.HasDiscordDetails = false
 	}
 
-	if shouldRun != true {
+	if DiscordConfig.HasDiscordDetails != true {
 		log.Printf("Discord disabled.")
 		return
 	} else {
@@ -35,7 +39,7 @@ func initDiscord(token string, channel string, adminChannel string) {
 	//var Session *discordgo.Session
 	bot, err := discordgo.New("Bot " + token)
 	Session := bot
-	setupSession(Session)
+	DiscordConfig.ActiveSession = Session
 	if err != nil {
 		log.Println("error creating Discord session,", err)
 		return
