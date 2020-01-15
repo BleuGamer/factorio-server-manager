@@ -40,13 +40,13 @@ gen_release: build/factorio-server-manager-linux.zip build/factorio-server-manag
 
 clean:
 	@echo "Cleaning"
-	@-rm -r build/
-	@-rm app/bundle.js
-	@-rm app/bundle.js.map
-	@-rm app/style.css
-	@-rm app/style.css.map
-	@-rm -r app/fonts/vendor/
-	@-rm -r app/images/vendor/
-	@-rm -r node_modules/
-	@-rm -r pkg/
-	@-rm -r factorio-server-manager
+	@-rm -rf build/
+	@-rm -f app/bundle.js
+	@-rm -f app/bundle.js.map
+	@-rm -f app/style.css
+	@-rm -f app/style.css.map
+	@-rm -rf app/fonts/vendor/
+	@-rm -rf app/images/vendor/
+	@-rm -rf node_modules/
+	@-rm -rf pkg/
+	@-rm -rf factorio-server-manager
