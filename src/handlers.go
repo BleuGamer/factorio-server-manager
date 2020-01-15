@@ -260,10 +260,6 @@ func LoadConfig(w http.ResponseWriter, r *http.Request) {
 func StartServer(w http.ResponseWriter, r *http.Request) {
 	var err error
 
-	// TODO: Better impl/placement of this.
-	launchTimestamp := time.Now().Format(time.RFC3339)
-	timeStampedLogFIleName := "factorio-server-console" + launchTimestamp + ".log"
-
 	resp := JSONResponse{
 		Success: false,
 	}
@@ -315,7 +311,7 @@ func StartServer(w http.ResponseWriter, r *http.Request) {
 		}
 
 		go func() {
-			err = FactorioServ.Run(timeStampedLogFIleName)
+			err = FactorioServ.Run()
 			if err != nil {
 				log.Printf("Error starting Factorio server: %+v", err)
 				return

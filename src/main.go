@@ -9,6 +9,7 @@ import (
 	"os"
 	"path/filepath"
 	"runtime"
+	"time"
 )
 
 type Config struct {
@@ -34,6 +35,7 @@ type Config struct {
 	CookieEncryptionKey     string `json:"cookie_encryption_key"`
 	SettingsFile            string `json:"settings_file"`
 	LogFile                 string `json:"log_file"`
+	TimeStampedLog          string
 	ConfFile                string
 	glibcCustom             string
 	glibcLocation           string
@@ -109,6 +111,10 @@ func parseFlags() {
 
 func main() {
 	var err error
+
+	config.TimeStampedLog = "factorio-server-console-" +
+		time.Now().Format(time.RFC3339) +
+		".log"
 
 	// Parse configuration flags
 	parseFlags()
