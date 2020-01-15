@@ -163,7 +163,7 @@ func initFactorio() (f *FactorioServer, err error) {
 	return
 }
 
-func (f *FactorioServer) Run(timeStampedLog string) error {
+func (f *FactorioServer) Run() error {
 	var err error
 
 	discordEmbedFactorioLaunch()
@@ -227,8 +227,8 @@ func (f *FactorioServer) Run(timeStampedLog string) error {
 		return err
 	}
 
-	go f.logCommand(f.StdOut, timeStampedLog)
-	go f.logCommand(f.StdErr, timeStampedLog)
+	go f.logCommand(f.StdOut)
+	go f.logCommand(f.StdErr)
 
 	err = f.Cmd.Start()
 	if err != nil {
@@ -255,11 +255,11 @@ func (f *FactorioServer) Run(timeStampedLog string) error {
 	return nil
 }
 
-func (f *FactorioServer) logCommand(std io.ReadCloser, timeStampedLog string) error {
+func (f *FactorioServer) logCommand(std io.ReadCloser) error {
 	stdScanner := bufio.NewScanner(std)
 	for stdScanner.Scan() {
 		log.Printf("Factorio Server: %s", stdScanner.Text())
-		if err := f.writeLog(stdScanner.Text(), timeStampedLog); err != nil {
+		if err := f.writeLog(stdScanner.Text()); err != nil {
 			log.Printf("Error: %s", err)
 			return err
 		}
@@ -278,8 +278,8 @@ func (f *FactorioServer) connectRcon() error {
 	return nil
 }
 
-func (f *FactorioServer) writeLog(logline string, timeStampedLog string) error {
-	logfileName := filepath.Join(config.FactorioDir, timeStampedLog)
+func (f *FactorioServer) writeLog(logline string) error {
+	logfileName := filepath.Join(config.FactorioDir, config.TimeStampedLog)
 	file, err := os.OpenFile(logfileName, os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0644)
 	if err != nil {
 		log.Printf("Cannot open logfile for appending Factorio Server output: %s", err)
@@ -290,7 +290,7 @@ func (f *FactorioServer) writeLog(logline string, timeStampedLog string) error {
 	logline = logline + "\n"
 
 	if _, err = file.WriteString(logline); err != nil {
-		log.Printf(timeStampedLog+": %s", err)
+		log.Printf(": %s", err)
 		return err
 	}
 
