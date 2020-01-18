@@ -9,7 +9,7 @@ import (
 
 func logSubscribe(client *Client, data interface{}) {
 	go func() {
-		logfile := filepath.Join(config.FactorioDir, "factorio-server-console.log")
+		logfile := filepath.Join(config.FactorioDir, config.TimeStampedLog)
 		t, err := tail.TailFile(logfile, tail.Config{Follow: true})
 		if err != nil {
 			log.Printf("Error subscribing to tail log %s", err)
