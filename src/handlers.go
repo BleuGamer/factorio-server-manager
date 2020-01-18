@@ -260,8 +260,6 @@ func LoadConfig(w http.ResponseWriter, r *http.Request) {
 func StartServer(w http.ResponseWriter, r *http.Request) {
 	var err error
 
-	setupChat(config.TimeStampedLog)
-
 	resp := JSONResponse{
 		Success: false,
 	}
