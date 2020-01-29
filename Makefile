@@ -6,6 +6,8 @@ NODE_ENV:=production
 UNAME := $(shell uname)
 ifeq ($(UNAME), Linux)
 	release := build/factorio-server-manager-linux.zip
+else ifeq ($(UNAME), Darwin)
+	release := build/factorio-server-manager-mac.zip
 else
 	release := build/factorio-server-manager-windows.zip
 endif
@@ -29,13 +31,19 @@ factorio-server-manager-linux:
 	@cd src; \
 	GOOS=linux GOARCH=amd64 go build -o ../factorio-server-manager/factorio-server-manager .
 
+factorio-server-manager-mac:
+	@echo "Building Backend - MacOS"
+	@mkdir -p factorio-server-manager
+	@cd src; \
+	GOOS=darwin GOARCH=amd64 go build -o ../factorio-server-manager/factorio-server-manager .
+
 factorio-server-manager-windows:
 	@echo "Building Backend - Windows"
 	@mkdir -p factorio-server-manager
 	@cd src; \
 	GOOS=windows GOARCH=386 go build -o ../factorio-server-manager/factorio-server-manager.exe .
 
-gen_release: build/factorio-server-manager-linux.zip build/factorio-server-manager-windows.zip
+gen_release: build/factorio-server-manager-linux.zip build/factorio-server-manager-windows.zip build/factorio-server-manager-mac.zip
 	@echo "Done"
 
 clean:
