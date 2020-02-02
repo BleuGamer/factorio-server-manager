@@ -10,6 +10,8 @@ import (
 	"path/filepath"
 	"runtime"
 	"time"
+
+	"github.com/bwmarrin/discordgo"
 )
 
 type Config struct {
@@ -41,6 +43,7 @@ type Config struct {
 	DiscordPrefix           string `json:"discord_prefix"`
 	LobbyName               string `json:"lobby_name"`
 	ServerLocation          string `json:"server_location"`
+	HasDiscordDetails       bool
 	TimeStampedLog          string
 	ConfFile                string
 	glibcCustom             string
@@ -49,9 +52,10 @@ type Config struct {
 }
 
 var (
-	config       Config
-	FactorioServ *FactorioServer
-	Auth         *AuthHTTP
+	config         Config
+	FactorioServ   *FactorioServer
+	Auth           *AuthHTTP
+	DiscordSession *discordgo.Session
 )
 
 func failOnError(err error, msg string) {

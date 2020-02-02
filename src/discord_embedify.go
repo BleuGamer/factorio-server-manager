@@ -8,7 +8,7 @@ import (
 
 func discordEmbedServerLaunch() {
 
-	if DiscordConfig.HasDiscordDetails != true {
+	if config.HasDiscordDetails != true {
 		return
 	} else {
 		embedme := &discordgo.MessageEmbed{
@@ -32,12 +32,12 @@ func discordEmbedServerLaunch() {
 			Timestamp: time.Now().Format(time.RFC3339), // Discord wants ISO8601; RFC3339 is an extension of ISO8601 and should be completely compatible.
 		}
 
-		DiscordConfig.ActiveSession.ChannelMessageSendEmbed(config.DiscordAdminChannelId, embedme)
+		DiscordSession.ChannelMessageSendEmbed(config.DiscordAdminChannelId, embedme)
 	}
 }
 
 func discordEmbedFactorioLaunch() {
-	if DiscordConfig.HasDiscordDetails != true {
+	if config.HasDiscordDetails != true {
 		return
 	} else {
 
@@ -56,12 +56,12 @@ func discordEmbedFactorioLaunch() {
 			Timestamp: time.Now().Format(time.RFC3339),
 		}
 
-		DiscordConfig.ActiveSession.ChannelMessageSendEmbed(config.DiscordChannelId, embedme)
+		DiscordSession.ChannelMessageSendEmbed(config.DiscordChannelId, embedme)
 	}
 }
 
 func discordEmbedFactorioClose() {
-	if DiscordConfig.HasDiscordDetails != true {
+	if config.HasDiscordDetails != true {
 		return
 	} else {
 
@@ -73,6 +73,6 @@ func discordEmbedFactorioClose() {
 			Timestamp:   time.Now().Format(time.RFC3339),
 		}
 
-		DiscordConfig.ActiveSession.ChannelMessageSendEmbed(config.DiscordChannelId, embedme)
+		DiscordSession.ChannelMessageSendEmbed(config.DiscordChannelId, embedme)
 	}
 }

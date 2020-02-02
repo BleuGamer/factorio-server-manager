@@ -8,22 +8,15 @@ import (
 	"github.com/bwmarrin/discordgo"
 )
 
-type discordConfig struct {
-	HasDiscordDetails bool
-	ActiveSession     *discordgo.Session
-}
-
-var DiscordConfig discordConfig
-
 func initDiscord(token string, channel string, adminChannel string) {
 
 	if token != "" && channel != "" {
-		DiscordConfig.HasDiscordDetails = true
+		config.HasDiscordDetails = true
 	} else {
-		DiscordConfig.HasDiscordDetails = false
+		config.HasDiscordDetails = false
 	}
 
-	if DiscordConfig.HasDiscordDetails != true {
+	if config.HasDiscordDetails != true {
 		log.Printf("Discord disabled.")
 		return
 	} else {
@@ -39,7 +32,7 @@ func initDiscord(token string, channel string, adminChannel string) {
 	//var Session *discordgo.Session
 	bot, err := discordgo.New("Bot " + token)
 	Session := bot
-	DiscordConfig.ActiveSession = Session
+	DiscordSession = Session
 	if err != nil {
 		log.Println("error creating Discord session,", err)
 		return
