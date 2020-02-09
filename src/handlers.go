@@ -260,6 +260,11 @@ func LoadConfig(w http.ResponseWriter, r *http.Request) {
 func StartServer(w http.ResponseWriter, r *http.Request) {
 	var err error
 
+	// TODO: Better impl/placement of this.
+	launchTimestamp := time.Now().Format(time.RFC3339)
+	timeStampedLogFIleName := "factorio-server-console" + launchTimestamp + ".log"
+	setupChat(timeStampedLogFIleName)
+
 	resp := JSONResponse{
 		Success: false,
 	}
